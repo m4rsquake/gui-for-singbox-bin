@@ -4,5 +4,3 @@ src/
 *.pkg.tar.zst.sig
 GUI.for.SingBox-linux-amd64.zip
 appicon.png
-AGENTS.md
-domain-model.md
