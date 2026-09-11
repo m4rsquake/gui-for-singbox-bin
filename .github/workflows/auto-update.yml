@@ -5,6 +5,9 @@ on:
     # 每天每 4 小时检查一次上游是否有新版本
     - cron: '0 */4 * * *'
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/**'
 
 permissions:
   contents: write
