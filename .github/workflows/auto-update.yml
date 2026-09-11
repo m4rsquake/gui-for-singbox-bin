@@ -76,6 +76,7 @@ jobs:
               chown -R builder:builder /workspace
               su builder -c 'updpkgsums && makepkg --printsrcinfo > .SRCINFO && makepkg --verifysource'
             "
+          sudo chown -R $USER:$USER .
 
       - name: Commit and push changes to GitHub
         if: steps.check.outputs.has_update == 'true'
@@ -95,7 +96,7 @@ jobs:
           LATEST: ${{ steps.check.outputs.latest_version }}
         run: |
           mkdir -p ~/.ssh
-          echo "${AUR_KEY}" > ~/.ssh/aur_key
+          printf '%s\n' "${AUR_KEY}" > ~/.ssh/aur_key
           chmod 600 ~/.ssh/aur_key
           ssh-keyscan -H aur.archlinux.org >> ~/.ssh/known_hosts
 
