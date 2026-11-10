@@ -3,7 +3,7 @@
 pkgname=gui-for-singbox-bin
 _pkgname=GUI.for.SingBox
 _installdir=gui-for-singbox
-pkgver=1.28.1
+pkgver=1.29.0
 pkgrel=1
 pkgdesc='GUI for SingBox, a GUI client application for sing-box.'
 arch=('x86_64')
@@ -32,7 +32,7 @@ source=(
     "${pkgname%-bin}.rules"
     "${pkgname%-bin}-setcap.hook"
 )
-sha256sums=('2a4153429b5b0aa088f0f4024909b6cb47df4d596894a6597d4b7189aaf8a65b'
+sha256sums=('0bbee2b6daeba6a1c3fa5440a65445f2562e06071f012d28040ca8467b804b7f'
             '08257d0d21c76a56e48e38105460927293a452ddc6b0b62db401bf5b5b9b7adf'
             'ac72d374ce5cfaf485fe640a17b8b320c6fea98f68b7e6a92aa78d142fba1916'
             'a15e696f65bb1eb6bb53db85414d20b25549d3fa8eb52b70e6ee56f3bcbf5d82'
