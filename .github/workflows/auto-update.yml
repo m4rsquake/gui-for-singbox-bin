@@ -25,7 +25,12 @@ jobs:
         id: check
         run: |
           set -euo pipefail
+          # 认证调用：未认证的 api.github.com 在共享的 Actions 出口 IP 上极易撞到
+          # 60 次/小时的匿名限流（表现为 curl: (22) 403），会让定时任务红掉。
           RELEASE=$(curl --fail --silent --show-error --location \
+            --retry 3 --retry-delay 2 --retry-all-errors \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ github.token }}" \
             "https://api.github.com/repos/GUI-for-Cores/GUI.for.SingBox/releases/latest")
           LATEST=$(jq -er '.tag_name | strings | select(startswith("v"))' <<< "${RELEASE}")
           LATEST="${LATEST#v}"
@@ -105,7 +110,16 @@ jobs:
           git clone ssh://aur@aur.archlinux.org/gui-for-singbox-bin.git /tmp/aur
           
           # 仅同步 AUR 打包必需文件，避免把 CI 配置或内部文档同步到 AUR
-          cp PKGBUILD .SRCINFO gui-for-singbox* /tmp/aur/
+          # 注意：不能用 gui-for-singbox* 通配——makepkg --verifysource 会把上游
+          # zip（约 488KiB）下到工作区，AUR 拒收超过 blob 上限的文件，会让推送失败。
+          cp PKGBUILD .SRCINFO \
+            gui-for-singbox-launcher \
+            gui-for-singbox.desktop \
+            gui-for-singbox.install \
+            gui-for-singbox.rules \
+            gui-for-singbox-setcap.hook \
+            /tmp/aur/
+
           cd /tmp/aur
           git config user.name "m4rsquake"
           git config user.email "m4rsquake@outlook.com"
